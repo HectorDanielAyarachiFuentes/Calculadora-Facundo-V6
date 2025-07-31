@@ -13,7 +13,50 @@
         const SpeechService = { speak(text, lang = 'es-ES', onBoundaryCallback = null, onEndCallback = null) { if (!text || typeof window.speechSynthesis === 'undefined') { if(onEndCallback) onEndCallback(); return; } window.speechSynthesis.cancel(); const utterance = new SpeechSynthesisUtterance(text); utterance.lang = lang; if (onBoundaryCallback) { utterance.onboundary = onBoundaryCallback; } if (onEndCallback) { utterance.onend = onEndCallback; } window.speechSynthesis.speak(utterance); } };
         const FormalMode = {
             element: null, placeholder: '<span class="placeholder-text">Representación gráfica...</span>', init(selector) { this.element = document.querySelector(selector); this.reset(); }, reset() { this.element.innerHTML = this.placeholder; },
-            render(pEnteraStr, pDecimalStr) { this.element.innerHTML = ''; const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg"); this.element.appendChild(svg); const digitWidth = 55, startX = 40, numY = 160, mainLabelY = 100, verticalLabelY = 80, fontSize = 72, viewBoxHeight = 220; let currentX = startX; const integerBlockWidth = pEnteraStr.length * digitWidth; const integerBlockCenterX = currentX + (integerBlockWidth / 2); svg.innerHTML += `<text x="${integerBlockCenterX}" y="${mainLabelY}" class="svg-etiqueta-principal" text-anchor="middle">PARTE ENTERA</text>`; svg.innerHTML += `<rect x="${currentX - 5}" y="${numY - fontSize + 10}" width="${integerBlockWidth + 10}" height="${fontSize}" fill="transparent" />`; svg.innerHTML += `<text id="svg-entero-texto" x="${integerBlockCenterX}" y="${numY}" class="svg-numero" style="fill: var(--ln-color-entero)" text-anchor="middle">${pEnteraStr}</text>`; currentX += integerBlockWidth + 10; if (pEnteraStr && pDecimalStr) { svg.innerHTML += `<text x="${currentX + 5}" y="${numY - 10}" class="svg-numero" style="fill: var(--ln-color-coma">,</text>`; currentX += 25; } const gDecimales = document.createElementNS("http://www.w3.org/2000/svg", "g"); gDecimales.id = "svg-decimales-g"; const gEtiquetas = document.createElementNS("http://www.w3.org/2000/svg", "g"); gEtiquetas.id = "svg-etiquetas-g"; svg.appendChild(gDecimales); svg.appendChild(gEtiquetas); let startDecimalX = currentX; const decimalPlaces = NumberConverter._decimalPlaces; pDecimalStr.split('').forEach((digit, index) => { if (index < decimalPlaces.length - 1) { const digitCenterX = currentX + (digitWidth / 2); gDecimales.innerHTML += `<rect x="${currentX}" y="${numY - fontSize + 10}" width="${digitWidth}" height="${fontSize}" fill="transparent" />`; gDecimales.innerHTML += `<text x="${digitCenterX}" y="${numY}" class="svg-numero" style="fill: var(--ln-color-decimal)" text-anchor="middle">${digit}</text>`; gEtiquetas.innerHTML += `<line x1="${currentX + digitWidth}" y1="40" x2="${currentX + digitWidth}" y2="${viewBoxHeight}" stroke="#ccc" stroke-dasharray="5,5" />`; gEtiquetas.innerHTML += `<text x="${digitCenterX}" y="${verticalLabelY}" class="svg-etiqueta-vertical" transform="rotate(-90 ${digitCenterX},${verticalLabelY})">${decimalPlaces[index + 1].replace("_", "")}</text>`; currentX += digitWidth; } }); gEtiquetas.innerHTML += `<line x1="${startDecimalX - 10}" y1="40" x2="${startDecimalX - 10}" y2="${viewBoxHeight}" stroke="var(--ln-color-entero)" stroke-width="3" stroke-dasharray="8,4" />`; svg.setAttribute('viewBox', `0 0 ${currentX + 20} ${viewBoxHeight}`); },
+            render(pEnteraStr, pDecimalStr) { this.element.innerHTML = ''; const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg"); this.element.appendChild(svg); const digitWidth = 55, startX = 40, numY = 160, mainLabelY = 100, verticalLabelY = 80, fontSize = 72, viewBoxHeight = 220; let currentX = startX; const integerBlockWidth = pEnteraStr.length * digitWidth; const integerBlockCenterX = currentX + (integerBlockWidth / 2); svg.innerHTML += `<text x="${integerBlockCenterX}" y="${mainLabelY}" class="svg-etiqueta-principal" text-anchor="middle">PARTE ENTERA</text>`; svg.innerHTML += `<rect x="${currentX - 5}" y="${numY - fontSize + 10}" width="${integerBlockWidth + 10}" height="${fontSize}" fill="transparent" />`; svg.innerHTML += `<text id="svg-entero-texto" x="${integerBlockCenterX}" y="${numY}" class="svg-numero" style="fill: var(--ln-color-entero)" text-anchor="middle">${pEnteraStr}</text>`; currentX += integerBlockWidth + 20; // Aumentamos el espacio inicial
+
+    if (pEnteraStr && pDecimalStr) { 
+        // Línea divisoria vertical con estilo más prominente
+        svg.innerHTML += `
+            <line 
+                x1="${currentX}"
+                y1="30"
+                x2="${currentX}"
+                y2="${viewBoxHeight}"
+                stroke="#333"
+                stroke-width="4"
+                stroke-dasharray="none"
+            />`;
+        
+        // Mayor espacio antes de la coma
+        currentX += 40;
+        
+        // Coma con posicionamiento explícito y tamaño ajustado
+        svg.innerHTML += `
+            <text 
+                x="${currentX}" 
+                y="${numY}" 
+                class="svg-numero" 
+                style="fill: var(--ln-color-coma); font-size: 72px;"
+            >,</text>`;
+        
+        // Mayor espacio después de la coma
+        currentX += 40;
+    }
+
+    // Eliminar la segunda línea divisoria que podría estar causando conflicto
+    // Comentar o eliminar la línea que comienza con gEtiquetas.innerHTML += `<line x1="${startDecimalX - 15}"...
+    
+    const gDecimales = document.createElementNS("http://www.w3.org/2000/svg", "g"); gDecimales.id = "svg-decimales-g"; const gEtiquetas = document.createElementNS("http://www.w3.org/2000/svg", "g"); gEtiquetas.id = "svg-etiquetas-g"; svg.appendChild(gDecimales); svg.appendChild(gEtiquetas); let startDecimalX = currentX; const decimalPlaces = NumberConverter._decimalPlaces; pDecimalStr.split('').forEach((digit, index) => { if (index < decimalPlaces.length - 1) { const digitCenterX = currentX + (digitWidth / 2); gDecimales.innerHTML += `<rect x="${currentX}" y="${numY - fontSize + 10}" width="${digitWidth}" height="${fontSize}" fill="transparent" />`; gDecimales.innerHTML += `<text x="${digitCenterX}" y="${numY}" class="svg-numero" style="fill: var(--ln-color-decimal)" text-anchor="middle">${digit}</text>`; gEtiquetas.innerHTML += `<line x1="${currentX + digitWidth}" y1="40" x2="${currentX + digitWidth}" y2="${viewBoxHeight}" stroke="#ccc" stroke-dasharray="5,5" />`; gEtiquetas.innerHTML += `<text x="${digitCenterX}" y="${verticalLabelY}" class="svg-etiqueta-vertical" transform="rotate(-90 ${digitCenterX},${verticalLabelY})">${decimalPlaces[index + 1].replace("_", "")}</text>`; currentX += digitWidth; } }); gEtiquetas.innerHTML += `
+    <line 
+        x1="${startDecimalX - 15}" 
+        y1="40" 
+        x2="${startDecimalX - 15}" 
+        y2="${viewBoxHeight}" 
+        stroke="var(--ln-color-entero)" 
+        stroke-width="2" 
+        stroke-dasharray="8,4"
+    />`; svg.setAttribute('viewBox', `0 0 ${currentX + 20} ${viewBoxHeight}`); },
             play({ fullText, integerText, decimalText, unitText }) { if (!fullText) return; const enteroSVG = document.getElementById('svg-entero-texto'); const decimalSVG = document.getElementById('svg-decimales-g'); const etiquetaSVG = document.getElementById('svg-etiquetas-g'); const onBoundary = (e) => { if (e.name !== 'word') return; const currentText = fullText.substring(0, e.charIndex + e.charLength); [enteroSVG, decimalSVG, etiquetaSVG].forEach(el => el && el.classList.remove('highlight')); if(decimalSVG) Array.from(decimalSVG.children).forEach(el => el.classList.remove('highlight')); if (enteroSVG && integerText && currentText.includes(integerText)) enteroSVG.classList.add('highlight'); if (decimalSVG && decimalText && currentText.includes(decimalText)) decimalSVG.querySelectorAll('text').forEach(el => el.classList.add('highlight')); if (etiquetaSVG && unitText && currentText.includes(unitText)) { decimalSVG.querySelectorAll('text').forEach(el => el.classList.remove('highlight')); etiquetaSVG.classList.add('highlight'); } }; const onEnd = () => [enteroSVG, decimalSVG, etiquetaSVG].forEach(el => el && el.classList.remove('highlight')); SpeechService.speak(fullText, 'es-ES', onBoundary, onEnd); }
         };
         const PhoneticMode = {
