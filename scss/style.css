@@ -1155,6 +1155,9 @@ header[role=banner] .subtitle a:hover {
 /* ============================================== */
 /* --- DISEÑO RESPONSIVE PARA MÓVILES MEJORADO --- */
 /* ============================================== */
+/* ============================================== */
+/* --- DISEÑO RESPONSIVE PARA MÓVILES MEJORADO --- */
+/* ============================================== */
 @media (max-width: 600px) {
     body { 
         padding: 0;
@@ -1194,7 +1197,7 @@ header[role=banner] .subtitle a:hover {
     
     #display {
         width: calc(100% - 20px);
-        margin: 0 auto 15px;
+        margin: 0 auto 15px !important;
         font-size: 2.5rem !important;
         min-height: 70px;
         padding: 15px;
@@ -1205,7 +1208,7 @@ header[role=banner] .subtitle a:hover {
         width: calc(100% - 20px) !important;
         margin: 0 auto;
         flex-grow: 1;
-        max-height: 60vh;
+        max-height: 60dvh;
         border-radius: 15px;
     }
     
@@ -1238,6 +1241,7 @@ header[role=banner] .subtitle a:hover {
     #history-panel {
         width: 100%;
         max-width: 100vw;
+        height: 100dvh;
     }
     
     .history-header {
