@@ -1,5 +1,9 @@
 /* ======================================================= */
+<<<<<<< HEAD
 /* --- COMPONENTE: CALCULADORA (Versión Definitiva con dvh) --- */
+=======
+/* --- COMPONENTE: CALCULADORA (Mejorado y Refactorizado) --- */
+>>>>>>> parent of 0128db5 (1321)
 /* ======================================================= */
 
 // --- Variables específicas del componente ---
@@ -12,10 +16,6 @@ $keyboard-gap: 2px;
     max-width: 480px;
     opacity: 0;
     transition: opacity 1s;
-    flex-grow: 1;
-    display: flex;
-    flex-direction: column;
-    height: 100%;
 
     // Efectos visuales consolidados
     --neon-color-1: var(--btn-equal-bg);
@@ -29,12 +29,15 @@ $keyboard-gap: 2px;
         flex-grow: 1;
         display: flex;
         flex-direction: column;
+<<<<<<< HEAD
         height: 100%;
         padding: 0;
         margin: 0;
         // Soporte para navegadores antiguos
         height: auto;
         min-height: 60dvh;
+=======
+>>>>>>> parent of 0128db5 (1321)
     }
 }
 
@@ -55,7 +58,6 @@ $keyboard-gap: 2px;
     word-wrap: break-word;
     overflow: hidden;
     position: relative;
-    flex-shrink: 0;
 
     // Efecto Glitch
     &.glitch {
@@ -66,8 +68,10 @@ $keyboard-gap: 2px;
     }
 
     @media (max-width: 600px) {
-        font-size: clamp(1.8rem, 8vw, 3.5rem);
+        // MEJORA: Tipografía fluida y controlada
+        font-size: clamp(2.5rem, 10vw, 4rem);
         padding: 15px;
+<<<<<<< HEAD
         flex-shrink: 0;
         min-height: 70px;
         margin-bottom: 10px;
@@ -76,17 +80,21 @@ $keyboard-gap: 2px;
         width: calc(100% - 20px);
         margin-left: auto;
         margin-right: auto;
+=======
+        flex-shrink: 0; // Evita que el display se encoja cuando el teclado crece
+>>>>>>> parent of 0128db5 (1321)
     }
 }
 
 .keyboard-container {
     position: relative;
     width: 100%;
-    flex-grow: 1;
+    aspect-ratio: 1 / 1;
     background-color: var(--bg-keyboard);
     border-radius: 10px;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
     overflow: hidden;
+<<<<<<< HEAD
     margin-bottom: env(safe-area-inset-bottom, 15px);
 
     @media (max-width: 600px) {
@@ -105,6 +113,14 @@ $keyboard-gap: 2px;
         // Fallback para navegadores sin soporte dvh
         max-height: 65vh;
         min-height: 50vh;
+=======
+
+    @media (max-width: 600px) {
+        // El teclado se vuelve flexible para ocupar el espacio restante
+        flex-grow: 1;           // Ocupa todo el espacio vertical disponible
+        min-height: 0;          // Fix necesario para flexbox en algunos navegadores
+        aspect-ratio: unset;    // Se quita la relación de aspecto para que la altura sea libre
+>>>>>>> parent of 0128db5 (1321)
     }
 }
 
@@ -116,7 +132,7 @@ $keyboard-gap: 2px;
     display: grid;
     grid-template-columns: repeat(5, 1fr);
     grid-template-rows: repeat(5, 1fr);
-    gap: $keyboard-gap;
+    gap: $keyboard-gap; // MEJORA: Usando variable SCSS
     width: 100%;
     height: 100%;
     transition: top 0.5s ease-in-out, opacity 0.3s ease-in-out;
@@ -134,7 +150,6 @@ $keyboard-gap: 2px;
         border: 2px solid #000;
         overflow: hidden;
         transition: transform 0.1s ease, background-color 0.2s ease;
-        border-radius: 5px;
 
         &--number { background-color: var(--btn-num-bg); }
         &--operator { background-color: var(--btn-op-bg); }
@@ -150,11 +165,11 @@ $keyboard-gap: 2px;
         .ripple { position: absolute; border-radius: 50%; background-color: rgba(255, 255, 255, 0.6); transform: scale(0); animation: ripple-effect 0.6s linear; pointer-events: none; }
 
         @media (max-width: 600px) {
-            font-size: clamp(1.2rem, 5vw, 1.8rem);
-            border-width: 1px;
-            border-radius: 6px;
+            // MEJORA: Tipografía fluida y controlada
+            font-size: clamp(1.5rem, 6vw, 2.2rem);
         }
     }
+<<<<<<< HEAD
     
     @media (max-width: 600px) {
         position: relative;
@@ -163,8 +178,11 @@ $keyboard-gap: 2px;
         // Fallback
         min-height: 50vh;
     }
+=======
+>>>>>>> parent of 0128db5 (1321)
 }
 
+// Estos botones deberían idealmente tener una clase, pero mantenemos los IDs
 #botexp, #botnor {
     @media (max-width: 600px) {
         font-size: clamp(0.8rem, 3.5vw, 1.1rem);
@@ -178,7 +196,7 @@ $keyboard-gap: 2px;
     left: 0;
     z-index: 1;
     width: 100%;
-    height: calc(100% - #{$nav-height});
+    height: calc(100% - #{$nav-height}); // MEJORA: Usando variable SCSS
     padding: 15px;
     background-color: var(--bg-output-screen);
     opacity: 0;
@@ -206,7 +224,6 @@ $keyboard-gap: 2px;
     
     @media (max-width: 600px) {
         font-size: clamp(1.2rem, 5vw, 1.8rem);
-        height: calc(100% - 50px);
     }
 }
 
@@ -220,7 +237,7 @@ $keyboard-gap: 2px;
     align-items: center;
     gap: 8px;
     width: 100%;
-    height: $nav-height;
+    height: $nav-height; // MEJORA: Usando variable SCSS
     padding: 10px;
     background-color: var(--nav-bg);
     opacity: 0;
@@ -230,13 +247,8 @@ $keyboard-gap: 2px;
     &--visible { bottom: 0; opacity: 1; pointer-events: all; }
 
     &__button {
-        flex-grow: 1; 
-        padding: 10px; 
-        background-color: rgba(255, 255, 255, 0.08); 
-        color: rgba(255, 255, 255, 0.8);
-        text-align: center; 
-        border-radius: 5px; 
-        transition: background-color 0.2s, color 0.2s;
+        flex-grow: 1; padding: 10px; background-color: rgba(255, 255, 255, 0.08); color: rgba(255, 255, 255, 0.8);
+        text-align: center; border-radius: 5px; transition: background-color 0.2s, color 0.2s;
 
         &:hover { background-color: rgba(255, 255, 255, 0.2); color: white; }
 
@@ -244,10 +256,10 @@ $keyboard-gap: 2px;
             font-family: 'Outfit', sans-serif;
             font-size: 1.5rem;
             @media (max-width: 600px) {
-                font-size: clamp(1.5rem, 6vw, 2rem);
-                padding: 8px 5px;
+                font-size: clamp(1.8rem, 7vw, 2.5rem);
             }
         }
+<<<<<<< HEAD
         
         @media (max-width: 600px) {
             padding: 8px 5px;
@@ -288,6 +300,8 @@ $keyboard-gap: 2px;
     .keyboard__button--operator,
     .keyboard__button--special {
         font-size: clamp(1.1rem, 4vw, 1.5rem) !important;
+=======
+>>>>>>> parent of 0128db5 (1321)
     }
     
     // Garantizar que el teclado ocupe el espacio disponible dinámicamente

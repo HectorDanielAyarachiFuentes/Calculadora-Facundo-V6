@@ -20,8 +20,12 @@
 @import 'components/history';
 @import 'components/sidebar';
 @import 'components/modal';
+<<<<<<< HEAD
 @import 'components/theme-switcher';
 
 // 4. Media queries responsivas
 @import 'responsive/mobile'; // Nuevo archivo para responsive móvil
 @import 'responsive/mobile-fallback'; // Nuevo archivo para fallbacks
+=======
+@import 'components/theme-switcher'; // Nuevo componente para el cambio de tema
+>>>>>>> parent of 0128db5 (1321)

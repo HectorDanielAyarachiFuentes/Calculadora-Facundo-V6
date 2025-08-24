@@ -75,13 +75,17 @@
   box-sizing: border-box;
 }
 
-html, body {
-  width: 100%;
-  height: 100%;
-}
-
 html, body, button, input, div, p, span, a, h1, h2, h3, h4, h5, h6 {
   transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
+@media (max-width: 600px) {
+  html {
+    box-sizing: border-box;
+  }
+  html *, html *:before, html *:after {
+    box-sizing: inherit;
+  }
 }
 
 body {
@@ -89,23 +93,33 @@ body {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+<<<<<<< HEAD
   min-height: 100dvh;
+=======
+  min-height: 100svh;
+>>>>>>> parent of 0128db5 (1321)
   padding: 20px;
   background-color: var(--bg-main);
   background-image: repeating-linear-gradient(90deg, var(--bg-grid-lines) 0 1px, transparent 1px 96px), repeating-linear-gradient(0deg, var(--bg-grid-lines) 0 1px, transparent 1px 96px);
   font-family: "Quicksand", sans-serif;
   color: #eee;
-  overflow: hidden;
+  overflow: hidden; /* Evita scroll en escritorio */
 }
 @media (max-width: 600px) {
   body {
     margin: 0;
+<<<<<<< HEAD
     padding: 0;
     height: 100dvh;
     min-height: 100dvh;
     justify-content: flex-start;
     min-height: 100vh;
     min-height: -webkit-fill-available;
+=======
+    padding: env(safe-area-inset-top, 10px) env(safe-area-inset-right, 10px) env(safe-area-inset-bottom, 20px) env(safe-area-inset-left, 10px);
+    overflow-y: auto;
+    overflow-x: hidden;
+>>>>>>> parent of 0128db5 (1321)
   }
 }
 
@@ -303,6 +317,7 @@ body::before {
   justify-content: center;
   align-items: center;
   padding-top: 0;
+<<<<<<< HEAD
   width: 100%;
   height: 100%;
 }
@@ -312,20 +327,21 @@ body::before {
     padding-top: env(safe-area-inset-top, 10px);
     height: 100dvh;
   }
+=======
+>>>>>>> parent of 0128db5 (1321)
 }
 
 #contenedor {
-  padding-left: 1em;
-  width: 100%;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
+  padding-left: 1em; /* relativo al tamaño de fuente */
 }
 @media (max-width: 600px) {
   #contenedor {
     padding-left: 0 !important;
+<<<<<<< HEAD
     height: 100dvh;
     padding: 0 env(safe-area-inset-right, 10px) 0 env(safe-area-inset-left, 10px);
+=======
+>>>>>>> parent of 0128db5 (1321)
   }
 }
 
@@ -404,28 +420,27 @@ header[role=banner] .subtitle a:hover {
   }
 }
 
+<<<<<<< HEAD
 /* ======================================================= */
 /* --- COMPONENTE: CALCULADORA (Versión Definitiva con dvh) --- */
 /* ======================================================= */
+=======
+/* --- COMPONENTE: CALCULADORA (CONTENEDOR, PANTALLA, TECLADO) --- */
+>>>>>>> parent of 0128db5 (1321)
 .calculator-container {
   position: relative;
   width: 100%;
   max-width: 480px;
   opacity: 0;
   transition: opacity 1s;
-  flex-grow: 1;
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-  --neon-color-1: var(--btn-equal-bg);
-  --neon-color-2: var(--btn-special-bg);
-  animation: neon-pulse 5s infinite alternate;
 }
 @media (max-width: 600px) {
   .calculator-container {
-    max-width: none;
+    width: 100% !important;
+    max-width: none !important;
     margin-bottom: 0;
     flex-grow: 1;
+<<<<<<< HEAD
     display: flex;
     flex-direction: column;
     height: 100%;
@@ -433,6 +448,8 @@ header[role=banner] .subtitle a:hover {
     margin: 0;
     height: auto;
     min-height: 60dvh;
+=======
+>>>>>>> parent of 0128db5 (1321)
   }
 }
 
@@ -452,37 +469,13 @@ header[role=banner] .subtitle a:hover {
   border-radius: 10px;
   word-wrap: break-word;
   overflow: hidden;
-  position: relative;
-  flex-shrink: 0;
-}
-.display.glitch {
-  animation: glitch-main 0.3s linear;
-}
-.display.glitch::before, .display.glitch::after {
-  content: attr(data-text);
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: var(--bg-display);
-  overflow: hidden;
-}
-.display.glitch::before {
-  left: 2px;
-  text-shadow: -2px 0 var(--btn-op-bg);
-  animation: glitch-anim-1 0.8s infinite linear alternate-reverse;
-}
-.display.glitch::after {
-  left: -2px;
-  text-shadow: -2px 0 var(--btn-special-bg), 2px 2px var(--btn-equal-bg);
-  animation: glitch-anim-2 0.6s infinite linear alternate-reverse;
 }
 @media (max-width: 600px) {
   .display {
-    font-size: clamp(1.8rem, 8vw, 3.5rem);
+    font-size: 10vw !important;
     padding: 15px;
     flex-shrink: 0;
+<<<<<<< HEAD
     min-height: 70px;
     margin-bottom: 10px;
     margin-top: env(safe-area-inset-top, 10px);
@@ -490,22 +483,35 @@ header[role=banner] .subtitle a:hover {
     width: calc(100% - 20px);
     margin-left: auto;
     margin-right: auto;
+=======
+  }
+}
+
+#display {
+  margin-left: 0;
+}
+@media (max-width: 600px) {
+  #display {
+    margin-left: 0 !important;
+>>>>>>> parent of 0128db5 (1321)
   }
 }
 
 .keyboard-container {
   position: relative;
   width: 100%;
-  flex-grow: 1;
+  aspect-ratio: 1/1;
   background-color: var(--bg-keyboard);
   border-radius: 10px;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
   overflow: hidden;
-  margin-bottom: env(safe-area-inset-bottom, 15px);
 }
 @media (max-width: 600px) {
   .keyboard-container {
+    width: 100% !important;
+    height: auto !important;
     flex-grow: 1;
+<<<<<<< HEAD
     min-height: 0;
     border-radius: 12px;
     margin-bottom: env(safe-area-inset-bottom, 10px);
@@ -518,6 +524,8 @@ header[role=banner] .subtitle a:hover {
     margin-right: auto;
     max-height: 65vh;
     min-height: 50vh;
+=======
+>>>>>>> parent of 0128db5 (1321)
   }
 }
 
@@ -539,6 +547,11 @@ header[role=banner] .subtitle a:hover {
   opacity: 0;
   pointer-events: none;
 }
+@media (max-width: 600px) {
+  .keyboard {
+    height: 100%;
+  }
+}
 .keyboard__button {
   position: relative;
   display: flex;
@@ -550,7 +563,6 @@ header[role=banner] .subtitle a:hover {
   border: 2px solid #000;
   overflow: hidden;
   transition: transform 0.1s ease, background-color 0.2s ease;
-  border-radius: 5px;
 }
 .keyboard__button--number {
   background-color: var(--btn-num-bg);
@@ -577,26 +589,16 @@ header[role=banner] .subtitle a:hover {
   animation: arcoiris 2s linear infinite;
   transform: scale(1.05);
 }
-.keyboard__button:active:not(:disabled) {
-  transform: scale(0.95);
-}
 .keyboard__button:disabled {
-  background-color: var(--btn-disabled-bg);
+  background-color: var(--btn-disabled-bg) !important;
   color: var(--btn-disabled-text);
   cursor: not-allowed;
-  animation: none;
-  transform: none;
-}
-.keyboard__button .ripple {
-  position: absolute;
-  border-radius: 50%;
-  background-color: rgba(255, 255, 255, 0.6);
-  transform: scale(0);
-  animation: ripple-effect 0.6s linear;
-  pointer-events: none;
+  animation: none !important;
+  transform: none !important;
 }
 @media (max-width: 600px) {
   .keyboard__button {
+<<<<<<< HEAD
     font-size: clamp(1.2rem, 5vw, 1.8rem);
     border-width: 1px;
     border-radius: 6px;
@@ -608,12 +610,15 @@ header[role=banner] .subtitle a:hover {
     height: 100%;
     min-height: 50dvh;
     min-height: 50vh;
+=======
+    font-size: 6vw;
+>>>>>>> parent of 0128db5 (1321)
   }
 }
 
 @media (max-width: 600px) {
   #botexp, #botnor {
-    font-size: clamp(0.8rem, 3.5vw, 1.1rem);
+    font-size: 3.5vw !important;
     padding: 8px;
   }
 }
@@ -637,6 +642,7 @@ header[role=banner] .subtitle a:hover {
   pointer-events: all;
 }
 .output-screen__error-message {
+  position: relative;
   width: 90%;
   margin: auto;
   color: var(--color-error);
@@ -645,7 +651,7 @@ header[role=banner] .subtitle a:hover {
 }
 @media (max-width: 600px) {
   .output-screen__error-message {
-    font-size: clamp(1rem, 4.5vw, 1.5rem);
+    font-size: 4.5vw !important;
     padding-top: 25%;
   }
 }
@@ -682,8 +688,7 @@ header[role=banner] .subtitle a:hover {
 }
 @media (max-width: 600px) {
   .output-screen {
-    font-size: clamp(1.2rem, 5vw, 1.8rem);
-    height: calc(100% - 50px);
+    font-size: 5vw !important;
   }
 }
 
@@ -728,6 +733,7 @@ header[role=banner] .subtitle a:hover {
 }
 @media (max-width: 600px) {
   .bottom-nav__button--arrow {
+<<<<<<< HEAD
     font-size: clamp(1.5rem, 6vw, 2rem);
     padding: 8px 5px;
   }
@@ -786,10 +792,63 @@ header[role=banner] .subtitle a:hover {
       min-height: 50vh;
     }
   }
+=======
+    font-size: 7vw !important;
+  }
 }
-/* ======================================================= */
-/* --- COMPONENTE: PANEL DE HISTORIAL (Corregido) --- */
-/* ======================================================= */
+
+.calculator-container {
+  --neon-color-1: var(--btn-equal-bg);
+  --neon-color-2: var(--btn-special-bg);
+  animation: neon-pulse 5s infinite alternate;
+>>>>>>> parent of 0128db5 (1321)
+}
+
+.keyboard__button {
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.1s ease;
+}
+.keyboard__button:active:not(:disabled) {
+  transform: scale(0.95);
+}
+.keyboard__button .ripple {
+  position: absolute;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.6);
+  transform: scale(0);
+  animation: ripple-effect 0.6s linear;
+  pointer-events: none;
+}
+
+.display {
+  position: relative;
+}
+.display.glitch {
+  animation: glitch-main 0.3s linear;
+}
+.display.glitch::before, .display.glitch::after {
+  content: attr(data-text);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: var(--bg-display);
+  overflow: hidden;
+}
+.display.glitch::before {
+  left: 2px;
+  text-shadow: -2px 0 var(--btn-op-bg);
+  animation: glitch-anim-1 0.8s infinite linear alternate-reverse;
+}
+.display.glitch::after {
+  left: -2px;
+  text-shadow: -2px 0 var(--btn-special-bg), 2px 2px var(--btn-equal-bg);
+  animation: glitch-anim-2 0.6s infinite linear alternate-reverse;
+}
+
+/* --- COMPONENTE: PANEL DE HISTORIAL --- */
 .history-toggle-btn {
   position: fixed;
   top: 20px;
@@ -1176,31 +1235,114 @@ header[role=banner] .subtitle a:hover {
 .theme-toggle-btn:hover i {
   transform: rotate(30deg);
 }
-@media (max-width: 600px) {
-  .theme-toggle-btn {
-    top: 10px;
-    right: 70px; /* Ajustado para móviles */
-    width: 35px;
-    height: 35px;
-    font-size: 1rem;
-  }
-}
+
 
 /* Animación para el cambio de tema */
 .theme-transition {
   transition: background-color 0.5s ease, color 0.5s ease, border-color 0.5s ease, box-shadow 0.5s ease;
 }
 
+<<<<<<< HEAD
 /* ================================================= */
 /* --- VARIABLES GLOBALES PARA UN FÁCIL MANTENIMIENTO --- */
 /* ================================================= */
 /* ================================================= */
 /* --- MIXINS REUTILIZABLES --- */
 /* ================================================= */
+=======
+/*# sourceMappingURL=style.css.map */
+
+/* --- COMPONENTE: GEOMETRÍA --- */
+.geometry-container {
+    padding: 15px;
+    color: var(--history-text-color);
+    font-family: "Quicksand", sans-serif;
+    background-color: var(--bg-display);
+    border-radius: 8px;
+}
+
+.geometry-selector select {
+    width: 100%;
+    padding: 8px 12px;
+    border-radius: 8px;
+    background-color: var(--history-panel-bg);
+    color: var(--history-text-color);
+    border: 1px solid var(--history-border-color);
+    font-weight: bold;
+}
+
+.geometry-inputs label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: var(--history-text-color);
+}
+
+.geometry-inputs input {
+    width: 100%;
+    padding: 8px 12px;
+    margin-bottom: 10px;
+    border-radius: 8px;
+    background-color: var(--history-panel-bg);
+    color: var(--history-text-color);
+    border: 1px solid var(--history-border-color);
+    font-weight: bold;
+}
+
+.geometry-results {
+    margin: 15px 0;
+    padding: 10px;
+    background-color: var(--history-panel-bg);
+    border-radius: 8px;
+    border: 1px solid var(--history-border-color);
+}
+
+.geometry-results p {
+    margin: 5px 0;
+    font-weight: bold;
+    color: var(--history-text-color);
+}
+
+.geometry-visualization {
+    display: flex;
+    justify-content: center;
+    margin-top: 15px;
+    background-color: var(--history-panel-bg);
+    border-radius: 8px;
+    padding: 10px;
+    border: 1px solid var(--history-border-color);
+}
+
+.geometry-visualization svg {
+    max-width: 100%;
+    height: auto;
+    color: var(--history-text-color);
+    stroke: var(--history-text-color);
+}
+
+.geometry-visualization text {
+    fill: var(--history-text-color);
+    font-family: "Quicksand", sans-serif;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+/* Ajustes para el tema claro/oscuro */
+[data-theme=light] .geometry-visualization svg {
+    color: var(--history-text-color);
+    stroke: var(--history-text-color);
+}
+
+[data-theme=light] .geometry-visualization text {
+    fill: var(--history-text-color);
+}
+
+>>>>>>> parent of 0128db5 (1321)
 /* ============================================== */
 /* --- DISEÑO RESPONSIVE PARA MÓVILES MEJORADO --- */
 /* ============================================== */
 @media (max-width: 600px) {
+<<<<<<< HEAD
   body {
     padding: 0;
     height: 100dvh;
@@ -1305,3 +1447,103 @@ header[role=banner] .subtitle a:hover {
     height: -webkit-fill-available;
   }
 }/*# sourceMappingURL=style.css.map */
+=======
+    /* Ocultamos el scroll para evitar desbordamientos en el cuerpo de la página */
+    body { 
+        padding: 0;
+        /* --- CORRECCIÓN #1: Usar svh en lugar de vh --- */
+        /* Usamos 100svh (Small Viewport Height) para que la altura total 
+           se ajuste al espacio visible CUANDO las barras del navegador están presentes. */
+        height: 100svh;
+        overflow: hidden; /* Evita cualquier scroll no deseado en el body */
+    }
+    
+    /* Hacemos que el contenedor principal sea un flexbox vertical */
+    #contenedor {
+        width: 100%;
+        max-width: 100%;
+        height: 100%; /* Ocupará el 100% del body, que ya tiene 100svh */
+        margin: 0 !important;
+        
+        /* --- CORRECCIÓN #2: Estructura con Flexbox y Safe Area Padding --- */
+        /* Convertimos el contenedor en una columna flex para distribuir el espacio */
+        display: flex;
+        flex-direction: column;
+
+        /* Añadimos padding que respeta los "safe areas" de los móviles (notches, home bars)
+           con un fallback de 10px para navegadores que no lo soporten. */
+        padding: env(safe-area-inset-top, 10px) 
+                 env(safe-area-inset-right, 10px) 
+                 env(safe-area-inset-bottom, 10px) 
+                 env(safe-area-inset-left, 10px);
+
+        /* Esencial para que el padding no aumente el tamaño total del contenedor */
+        box-sizing: border-box;
+    }
+    
+    header[role="banner"] {
+        /* Este elemento no debe crecer ni encogerse, ocupa su espacio natural */
+        flex-shrink: 0; 
+        margin-bottom: 15px;
+        padding: 0; /* El padding ya está en #contenedor */
+    }
+    
+    header[role="banner"] h1 {
+        font-size: 2rem !important;
+        line-height: 1.2;
+    }
+    
+    header[role="banner"] .subtitle {
+        font-size: 0.8rem !important;
+        margin-top: 5px;
+    }
+
+    .display {
+        /* El display tampoco debe crecer ni encogerse */
+        flex-shrink: 0; 
+        width: 100%;
+        margin: 0 0 15px 0 !important;
+        font-size: 2.5rem !important;
+        min-height: 70px;
+    }
+
+    .keyboard-container {
+        /* --- CORRECCIÓN #3: Hacer que el teclado ocupe el espacio restante --- */
+        /* Con flex-grow: 1, el teclado se estirará verticalmente para
+           ocupar todo el espacio que sobre después de que el header y el display
+           hayan ocupado su lugar. */
+        flex-grow: 1;
+        /* Este truco de flexbox es necesario para que flex-grow funcione correctamente en todos los casos */
+        min-height: 0; 
+        
+        width: 100% !important;
+        margin: 0;
+        border-radius: 15px;
+    }
+    
+    .keyboard__button {
+        font-size: 1.6rem !important; /* Ligeramente más grande para mejor legibilidad */
+        border-radius: 8px;
+        border: none; /* Quitamos el borde negro que tenías para un look más limpio */
+    }
+    
+    /* --- OTROS AJUSTES RESPONSIVE --- */
+    .history-panel {
+        width: 100%;
+        max-width: 100vw;
+        height: 100svh; /* También aquí para consistencia */
+    }
+    
+    .history-toggle-btn, .sidebar-wrapper {
+        top: calc(env(safe-area-inset-top, 0px) + 15px);
+    }
+
+    .history-toggle-btn {
+        right: 15px;
+    }
+
+    .sidebar-wrapper {
+        left: 15px;
+    }
+}
+>>>>>>> parent of 0128db5 (1321)
