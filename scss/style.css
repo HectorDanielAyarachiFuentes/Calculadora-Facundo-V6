@@ -1152,9 +1152,7 @@ header[role=banner] .subtitle a:hover {
 
 
 
-/* ============================================== */
-/* --- DISEÑO RESPONSIVE PARA MÓVILES MEJORADO --- */
-/* ============================================== */
+
 /* ============================================== */
 /* --- DISEÑO RESPONSIVE PARA MÓVILES MEJORADO --- */
 /* ============================================== */
@@ -1171,11 +1169,17 @@ header[role=banner] .subtitle a:hover {
         width: 100% !important;
         max-width: 100% !important;
         height: 100dvh;
-        padding: 0 !important;
         margin: 0 !important;
         display: flex;
         flex-direction: column;
         opacity: 1 !important;
+        
+        /* --- CORRECCIÓN --- */
+        /* Añadimos box-sizing para que el padding no aumente la altura total */
+        box-sizing: border-box;
+        /* Añadimos un padding inferior que respeta la barra de navegación del móvil */
+        /* El "20px" es un valor de respaldo para navegadores que no soporten env() */
+        padding-bottom: env(safe-area-inset-bottom, 20px);
     }
     
     header {
