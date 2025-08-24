@@ -1263,3 +1263,105 @@ header[role=banner] .subtitle a:hover {
         height: 22px;
     }
 }
+
+/* ============================================== */
+/* --- DISEÑO RESPONSIVE PARA MÓVILES MEJORADO --- */
+/* ============================================== */
+@media (max-width: 600px) {
+    body { 
+        padding: 0;
+        display: block;
+        /* --- CORRECCIÓN #1: Usar svh en lugar de vh --- */
+        /* Usamos svh (Small Viewport Height) para que la altura total 
+           respete las barras de navegación del navegador móvil (como la de Edge). */
+        min-height: 100svh;
+        height: 100svh;
+        overflow: hidden; /* Evita cualquier scroll no deseado */
+    }
+    
+    #contenedor {
+        width: 100%;
+        max-width: 100%;
+        /* --- CORRECCIÓN #2: svh y Safe Area Padding --- */
+        /* La altura también debe ser 100svh para llenar el espacio visible. */
+        height: 100svh;
+        /* Añadimos padding que respeta los "safe areas" de los móviles (notches, home bars)
+           y un pequeño fallback para otros navegadores. */
+        padding: env(safe-area-inset-top, 10px) env(safe-area-inset-right, 10px) env(safe-area-inset-bottom, 10px) env(safe-area-inset-left, 10px);
+        margin: 0 !important;
+        display: flex;
+        flex-direction: column;
+        opacity: 1 !important;
+        box-sizing: border-box; /* Buena práctica para que el padding no aumente el tamaño total. */
+    }
+    
+    header[role="banner"] {
+        padding: 0 15px; /* Ajustamos padding superior en #contenedor */
+        margin-bottom: 15px;
+        flex-shrink: 0; /* Evita que el header se encoja */
+    }
+    
+    header[role="banner"] h1 {
+        font-size: 2rem !important;
+        line-height: 1.2;
+        margin-bottom: 5px;
+    }
+    
+    header[role="banner"] .subtitle {
+        font-size: 0.7rem !important;
+        margin-top: 5px;
+    }
+
+    /* Usamos .display en lugar de #display para mayor consistencia con el CSS original */
+    .display {
+        width: 100%; /* El padding del contenedor ya lo ajusta */
+        margin: 0 0 15px !important;
+        font-size: 2.5rem !important;
+        min-height: 70px;
+        padding: 15px;
+        flex-shrink: 0; /* Evita que el display se encoja */
+    }
+
+    /* Usamos .keyboard-container en lugar de #cuerpoteclado */
+    .keyboard-container {
+        width: 100% !important; /* El padding del contenedor ya lo ajusta */
+        margin: 0 auto; /* Centrado y sin margen inferior extra */
+        flex-grow: 1; /* Permite que ocupe el espacio restante */
+        min-height: 0; /* Truco de flexbox para que funcione correctamente en todos los navegadores */
+        border-radius: 15px;
+    }
+    
+    .keyboard__button {
+        font-size: 1.5rem !important;
+        border-radius: 8px;
+    }
+    
+    /* Mejoras para el historial en móviles */
+    .history-panel {
+        width: 100%;
+        max-width: 100vw;
+        height: 100svh; /* También aquí para consistencia */
+    }
+    
+    .history-panel__header {
+        padding: 15px 70px 15px 20px;
+    }
+    
+    .history-toggle-btn {
+        top: 15px;
+        right: 15px;
+        width: 50px;
+        height: 50px;
+    }
+    
+    .history-toggle-btn svg {
+        width: 24px;
+        height: 24px;
+    }
+
+    /* Ajustes para los botones de las vistas de algoritmos (si existen) */
+    .bottom-nav {
+         /* Si usas esta clase, asegúrate de que esté dentro del #contenedor 
+            o ajústala con position: relative/absolute según sea necesario */
+    }
+}
