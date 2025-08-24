@@ -1,0 +1,60 @@
+/* ======================================================= */
+/* --- FALLBACKS PARA NAVEGADORES SIN SOPORTE DVH --- */
+/* ======================================================= */
+
+// Detectar navegadores que no soportan dvh
+@supports not (height: 100dvh) {
+    body {
+        min-height: 100vh;
+        
+        @media (max-width: 600px) {
+            height: 100vh;
+            min-height: 100vh;
+            min-height: -webkit-fill-available;
+        }
+    }
+    
+    .calculator-container {
+        @media (max-width: 600px) {
+            height: auto;
+            min-height: 80vh;
+        }
+    }
+    
+    .keyboard-container {
+        @media (max-width: 600px) {
+            max-height: 65vh;
+            min-height: 55vh;
+        }
+    }
+    
+    .keyboard {
+        @media (max-width: 600px) {
+            min-height: 50vh;
+        }
+    }
+}
+
+// Soporte específico para iOS
+@supports (-webkit-touch-callout: none) {
+    body, #contenedor {
+        min-height: -webkit-fill-available;
+        height: -webkit-fill-available;
+    }
+}
+
+// Mejores prácticas para áreas seguras
+@supports (padding: max(0px)) {
+    .calculator-container {
+        @media (max-width: 600px) {
+            padding-left: max(env(safe-area-inset-left, 10px), 10px);
+            padding-right: max(env(safe-area-inset-right, 10px), 10px);
+        }
+    }
+    
+    .keyboard-container {
+        @media (max-width: 600px) {
+            margin-bottom: max(env(safe-area-inset-bottom, 10px), 10px);
+        }
+    }
+}

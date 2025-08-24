@@ -32,6 +32,9 @@ $keyboard-gap: 2px;
         height: 100%;
         padding: 0;
         margin: 0;
+        // Soporte para navegadores antiguos
+        height: auto;
+        min-height: 60dvh;
     }
 }
 
@@ -68,8 +71,11 @@ $keyboard-gap: 2px;
         flex-shrink: 0;
         min-height: 70px;
         margin-bottom: 10px;
-        margin-top: 10px;
+        margin-top: env(safe-area-inset-top, 10px); // Respetar área segura superior
         border-radius: 8px;
+        width: calc(100% - 20px);
+        margin-left: auto;
+        margin-right: auto;
     }
 }
 
@@ -90,7 +96,15 @@ $keyboard-gap: 2px;
         margin-bottom: env(safe-area-inset-bottom, 10px);
         display: flex;
         flex-direction: column;
-        max-height: 65dvh; // CAMBIADO: a dvh
+        max-height: 65dvh;
+        min-height: 50dvh;
+        width: calc(100% - 20px);
+        margin-left: auto;
+        margin-right: auto;
+        
+        // Fallback para navegadores sin soporte dvh
+        max-height: 65vh;
+        min-height: 50vh;
     }
 }
 
@@ -145,7 +159,9 @@ $keyboard-gap: 2px;
     @media (max-width: 600px) {
         position: relative;
         height: 100%;
-        min-height: 50dvh; // CAMBIADO: a dvh
+        min-height: 50dvh;
+        // Fallback
+        min-height: 50vh;
     }
 }
 
@@ -244,6 +260,9 @@ $keyboard-gap: 2px;
         padding: 8px;
         bottom: env(safe-area-inset-bottom, 0px);
         position: fixed;
+        width: calc(100% - 20px);
+        left: 10px;
+        border-radius: 10px;
     }
 }
 
@@ -251,12 +270,18 @@ $keyboard-gap: 2px;
 @media (max-width: 600px) {
     .calculator-container {
         padding: 0 10px;
-        height: 100dvh; // CAMBIADO: a dvh
+        height: 100dvh;
+        // Fallback
+        height: auto;
+        min-height: 80dvh;
     }
     
     .keyboard-container {
-        min-height: 55dvh; // CAMBIADO: a dvh
-        max-height: 65dvh; // CAMBIADO: a dvh
+        min-height: 55dvh;
+        max-height: 65dvh;
+        // Fallbacks
+        min-height: 55vh;
+        max-height: 65vh;
     }
     
     // Asegurar que los botones de operaciones sean visibles
@@ -267,6 +292,25 @@ $keyboard-gap: 2px;
     
     // Garantizar que el teclado ocupe el espacio disponible dinámicamente
     .keyboard {
-        grid-template-rows: repeat(5, minmax(0, 1fr)); // Distribución flexible
+        grid-template-rows: repeat(5, minmax(0, 1fr));
+    }
+}
+
+/* Soporte para navegadores que no admiten dvh */
+@supports not (height: 100dvh) {
+    @media (max-width: 600px) {
+        .calculator-container {
+            height: auto;
+            min-height: 80vh;
+        }
+        
+        .keyboard-container {
+            min-height: 55vh;
+            max-height: 65vh;
+        }
+        
+        .keyboard {
+            min-height: 50vh;
+        }
     }
 }

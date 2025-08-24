@@ -1,4 +1,4 @@
-/* --- RESET Y ESTILOS BASE GLOBALES --- */
+/* --- RESET Y ESTILOS BASE GLOBALES base.scss --- */
 * {
     margin: 0;
     padding: 0;
@@ -19,8 +19,8 @@ body {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    min-height: 100dvh; // CAMBIADO: de svh a dvh (Dynamic Viewport Height)
-    padding: 0;
+    min-height: 100dvh;
+    padding: 20px;
     background-color: $bg-main;
     background-image: repeating-linear-gradient(90deg, $bg-grid-lines 0 1px, transparent 1px 96px),
                       repeating-linear-gradient(0deg, $bg-grid-lines 0 1px, transparent 1px 96px);
@@ -31,9 +31,12 @@ body {
     @media (max-width: 600px) {
         margin: 0;
         padding: 0;
-        height: 100dvh; // CAMBIADO: a dvh
-        min-height: 100dvh; // CAMBIADO: a dvh
+        height: 100dvh;
+        min-height: 100dvh;
         justify-content: flex-start;
+        // Añadir soporte para navegadores que no admiten dvh
+        min-height: 100vh;
+        min-height: -webkit-fill-available;
     }
 }
 
@@ -73,5 +76,18 @@ body {
         animation: move-grid 20s linear infinite;
         z-index: -1;
         opacity: 0.5;
+    }
+}
+
+/* Soporte para navegadores que no admiten dvh */
+@supports not (min-height: 100dvh) {
+    body {
+        min-height: 100vh;
+        
+        @media (max-width: 600px) {
+            height: 100vh;
+            min-height: 100vh;
+            min-height: -webkit-fill-available;
+        }
     }
 }
