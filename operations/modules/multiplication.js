@@ -1,5 +1,5 @@
 // =======================================================
-// --- operations/modules/multiplication.js (VERSIÓN FINAL CON CORRECCIÓN DE SIGNOS) ---
+// --- operations/modules/multiplication.js (VERSIÓN ADAPTADA PARA COMPATIBILIDAD CON HISTORIAL) ---
 // =======================================================
 "use strict";
 
@@ -7,14 +7,10 @@ import { calculateLayout } from '../utils/layout-calculator.js';
 import { crearCelda } from '../utils/dom-helpers.js';
 import { salida, errorMessages } from '../../config.js';
 
-/**
- * Inyecta los estilos CSS necesarios para la multiplicación en el <head> del documento.
- * Se ejecuta solo una vez para evitar duplicados.
- */
 function injectMultiplicationStyles() {
     const styleId = 'multiplication-styles';
     if (document.getElementById(styleId)) {
-        return; // Los estilos ya existen.
+        return;
     }
     const cssStyles = `
         .color-operando { color: #ffab70; }
@@ -23,7 +19,7 @@ function injectMultiplicationStyles() {
         .color-resultado{ color: #4caf50; }
         .color-parcial-1 { color: #64b5f6; }
         .color-parcial-2 { color: #ba68c8; }
-        .color-parcial-3 { color: #fff176; }
+        .color-parcial-3 { color: #4db6ac; }
     `;
     const styleElement = document.createElement('style');
     styleElement.id = styleId;
@@ -31,10 +27,6 @@ function injectMultiplicationStyles() {
     document.head.appendChild(styleElement);
 }
 
-/**
- * Realiza y visualiza la operación de multiplicación con un formato limpio y convencional.
- * @param {Array<[string, number]>} numerosAR - Los operandos.
- */
 export function multiplica(numerosAR) {
     injectMultiplicationStyles();
     salida.innerHTML = "";
@@ -112,9 +104,8 @@ export function multiplica(numerosAR) {
             yPos += tamCel;
             const colorClass = coloresParciales[index % coloresParciales.length];
             
-            // --- MEJORA: Colocar un único signo '+' antes del segundo producto parcial ---
             if (index === 1) {
-                const signPlusLeft = offsetHorizontal + (anchuraEnCeldas - maxPartialProductWidth - 2) * tamCel + paddingLeft;
+                const signPlusLeft = offsetHorizontal + (anchuraEnCeldas - maxPartialProductWidth - 1) * tamCel + paddingLeft;
                 fragment.appendChild(crearCelda("output-grid__cell output-grid__cell--signo color-signo", "+", { left: `${signPlusLeft}px`, top: `${yPos}px`, width: `${tamCel}px`, height: `${tamCel}px`, fontSize: `${tamFuente}px` }));
             }
             
@@ -125,15 +116,16 @@ export function multiplica(numerosAR) {
         });
 
         yPos += tamCel;
-        const lineWidth2 = Math.max(resultadoDisplay.length, maxPartialProductWidth + 1) * tamCel;
+        const lineWidth2 = Math.max(resultadoDisplay.length, maxPartialProductWidth + (partialProducts.length > 1 ? 1 : 0)) * tamCel;
         const lineLeft2 = offsetHorizontal + (anchuraEnCeldas * tamCel) - lineWidth2 + paddingLeft;
         fragment.appendChild(crearCelda("output-grid__line", "", { left: `${lineLeft2}px`, top: `${yPos}px`, width: `${lineWidth2}px`, height: `2px` }));
         yPos += tamCel * 0.2;
-    } else if (partialProducts.length === 1) {
-        yPos += tamCel; // Solo avanzamos el espacio para el resultado
+    } else if (partialProducts.length === 1 && num2.replace(/0/g, '').length > 0) {
+        yPos += tamCel;
     }
     
-    dibujarNumero(resultadoDisplay, yPos, 'output-grid__cell output-grid__cell--resultado-final', 'color-resultado');
+    // --- CAMBIO CLAVE: Usamos '--cociente' para que el historial lo reconozca ---
+    dibujarNumero(resultadoDisplay, yPos, 'output-grid__cell output-grid__cell--cociente', 'color-resultado');
 
     salida.appendChild(fragment);
 }
