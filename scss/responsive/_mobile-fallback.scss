@@ -1,60 +1,74 @@
 /* ======================================================= */
-/* --- FALLBACKS PARA NAVEGADORES SIN SOPORTE DVH --- */
+/* --- COMPATIBILIDAD Y AJUSTES ESPECÍFICOS PARA IOS --- */
 /* ======================================================= */
 
-// Detectar navegadores que no soportan dvh
+/*
+  NOTA: En tu código anterior usaste el ID #contenedor, y en este bloque aparece
+  la clase .calculator-container. Asegúrate de usar el selector correcto que
+  corresponda a tu contenedor principal. Para este ejemplo, usaré los que
+  proporcionaste en este bloque.
+*/
+
+// --- 1. Fallback para navegadores que NO soportan unidades `dvh` ---
+// `dvh` (dynamic viewport height) es ideal para móviles, pero necesita un fallback.
+// Usamos `vh` como alternativa, aunque puede causar problemas con las barras del navegador.
 @supports not (height: 100dvh) {
     body {
         min-height: 100vh;
         
-        @media (max-width: 600px) {
+        @include breakpoint(mobile) {
             height: 100vh;
-            min-height: 100vh;
+            // `-webkit-fill-available` es un intento de fallback específico para WebKit.
             min-height: -webkit-fill-available;
         }
     }
     
-    .calculator-container {
-        @media (max-width: 600px) {
+    // Anidamos el breakpoint dentro de cada selector para mayor claridad.
+    @include breakpoint(mobile) {
+        .calculator-container {
             height: auto;
             min-height: 80vh;
         }
-    }
-    
-    .keyboard-container {
-        @media (max-width: 600px) {
+        
+        .keyboard-container {
             max-height: 65vh;
             min-height: 55vh;
         }
-    }
-    
-    .keyboard {
-        @media (max-width: 600px) {
+        
+        .keyboard {
             min-height: 50vh;
         }
     }
 }
 
-// Soporte específico para iOS
+
+// --- 2. Soporte específico para el viewport de iOS Safari ---
+// iOS tiene un comportamiento particular con la altura del viewport (vh).
+// `-webkit-fill-available` fuerza al contenedor a ocupar todo el espacio disponible,
+// adaptándose mejor cuando aparece el teclado virtual o cambian las barras del navegador.
 @supports (-webkit-touch-callout: none) {
-    body, #contenedor {
-        min-height: -webkit-fill-available;
+    body, 
+    #contenedor { // Usando #contenedor como en el primer ejemplo. Ajusta si es necesario.
         height: -webkit-fill-available;
+        min-height: -webkit-fill-available;
     }
 }
 
-// Mejores prácticas para áreas seguras
+
+// --- 3. Mejores prácticas para las áreas seguras de iOS (Notch, Home Indicator) ---
+// La función `max()` nos permite establecer un padding/margen mínimo, pero se expande
+// para respetar el área segura (`env()`) si esta es mayor.
 @supports (padding: max(0px)) {
-    .calculator-container {
-        @media (max-width: 600px) {
-            padding-left: max(env(safe-area-inset-left, 10px), 10px);
-            padding-right: max(env(safe-area-inset-right, 10px), 10px);
+    @include breakpoint(mobile) {
+        .calculator-container {
+            // Asegura un padding mínimo de 10px, pero respeta el área segura si es mayor.
+            padding-left: max($safe-area-left, 10px);
+            padding-right: max($safe-area-right, 10px);
         }
-    }
-    
-    .keyboard-container {
-        @media (max-width: 600px) {
-            margin-bottom: max(env(safe-area-inset-bottom, 10px), 10px);
+        
+        .keyboard-container {
+            // Evita que el teclado quede debajo de la barra de inicio de iOS.
+            margin-bottom: max($safe-area-bottom, 10px);
         }
     }
 }

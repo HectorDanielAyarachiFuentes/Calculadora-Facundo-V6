@@ -1,183 +1,163 @@
+/* ================================================= */
+/* --- VARIABLES GLOBALES PARA UN FÁCIL MANTENIMIENTO --- */
+/* ================================================= */
+$breakpoint-mobile: 600px;
+// $breakpoint-small-mobile ya no es necesario gracias a la tipografía fluida.
+
+// Espaciados consistentes
+$spacing-xs: 5px;
+$spacing-sm: 10px;
+$spacing-md: 15px;
+$spacing-lg: 20px;
+
+// Radios de borde
+$border-radius-sm: 8px;
+$border-radius-lg: 15px;
+
+
+/* ================================================= */
+/* --- MIXINS REUTILIZABLES --- */
+/* ================================================= */
+// Mixin optimizado para aceptar cualquier media query
+@mixin respond-to($query) {
+    @media #{$query} {
+        @content;
+    }
+}
+
+
 /* ============================================== */
 /* --- DISEÑO RESPONSIVE PARA MÓVILES MEJORADO --- */
 /* ============================================== */
-@media (max-width: 600px) {
+@include respond-to("(max-width: #{$breakpoint-mobile})") {
+    
     body { 
         padding: 0;
-        display: flex;
-        flex-direction: column;
-        min-height: 100dvh;
-        height: 100dvh;
-        overflow: hidden;
-        justify-content: flex-start;
+        // La altura 100dvh (dynamic viewport height) se adapta a la aparición/desaparición
+        // de las barras de navegación del navegador móvil.
+        height: 100dvh; 
+        overflow: hidden; // Evita el scroll en la vista de la app.
     }
     
     #contenedor {
-        width: 100% !important;
-        max-width: 100% !important;
-        height: 100dvh;
-        padding: env(safe-area-inset-top, 10px) 
-                 env(safe-area-inset-right, 10px) 
-                 env(safe-area-inset-bottom, 10px) 
-                 env(safe-area-inset-left, 10px) !important;
-        margin: 0 !important;
+        width: 100%;
+        height: 100%;
+        padding: 0;
+        margin: 0;
         display: flex;
         flex-direction: column;
-        opacity: 1 !important;
+        opacity: 1 !important; // Asumiendo que se necesita para sobreescribir algo.
     }
     
-    header[role="banner"] {
-        padding: 10px 0 0;
-        margin-bottom: 10px;
-        flex-shrink: 0;
+    header {
+        padding: $spacing-sm $spacing-md 0;
+        margin-bottom: $spacing-md;
+        flex-shrink: 0; // Evita que el header se encoja.
         
         h1 {
-            font-size: 1.8rem !important;
-            line-height: 1.2;
-            margin-bottom: 5px;
-            letter-spacing: 0.5px !important;
+            // MEJORA: Tipografía fluida. Se ajusta suavemente al tamaño de la pantalla.
+            // clamp(min, preferido, max)
+            font-size: clamp(1.8rem, 8vw, 2.2rem) !important;
+            line-height: 1.1;
+            margin-bottom: $spacing-xs;
         }
         
         .subtitle {
             font-size: 0.7rem !important;
-            margin-top: 5px;
+            margin-top: $spacing-xs;
         }
     }
     
-    .display {
-        width: 100%;
-        margin: 0 auto 12px;
-        font-size: 2.2rem !important;
-        min-height: 65px;
-        padding: 15px;
+    #display {
+        width: calc(100% - ($spacing-lg * 2)); // Centrado y con padding lateral
+        margin: 0 auto $spacing-md;
+        padding: $spacing-md;
+        min-height: 70px;
         flex-shrink: 0;
-        border-radius: 8px;
+        // MEJORA: Tipografía fluida también para el display.
+        font-size: clamp(2rem, 10vw, 2.8rem) !important;
     }
     
-    .keyboard-container {
-        width: 100% !important;
+    #cuerpoteclado {
+        width: calc(100% - $spacing-lg) !important;
         margin: 0 auto;
-        flex-grow: 1;
-        max-height: 65dvh;
-        min-height: 50dvh;
-        border-radius: 12px;
-        margin-bottom: env(safe-area-inset-bottom, 10px);
+        border-radius: $border-radius-lg;
+        // Clave para la responsividad vertical: crece para ocupar todo el espacio sobrante.
+        flex-grow: 1; 
+        display: flex; // Permite que el grid interno (#teclado) ocupe el 100% de la altura.
+        padding: $spacing-xs; // Un pequeño padding para el grid
+    }
+
+    // MEJORA: Se define explícitamente el grid para el teclado.
+    #teclado {
+        width: 100%;
+        height: 100%;
+        display: grid;
+        // 4 columnas de igual tamaño.
+        grid-template-columns: repeat(4, 1fr); 
+        // 5 filas de igual tamaño. Se distribuyen el alto total disponible.
+        grid-template-rows: repeat(5, 1fr); 
+        gap: $spacing-sm; // Espacio uniforme entre botones.
+
+        button {
+            // MEJORA: Tipografía fluida para los botones.
+            font-size: clamp(1.3rem, 5vw, 1.6rem) !important;
+            border-radius: $border-radius-sm;
+            // Aseguramos que los botones se vean bien
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border: none;
+            cursor: pointer;
+        }
+
+        // Clase de ejemplo para un botón que ocupe dos columnas,
+        // como el botón "Ver Pantalla" de la imagen.
+        .btn-span-2 {
+            grid-column: span 2;
+        }
     }
     
-    .keyboard__button {
-        font-size: 1.4rem !important;
-        border-radius: 8px;
-        border-width: 1px;
-    }
-    
-    /* Ajustar botones de navegación en pantallas de algoritmos */
-    .bottom-nav {
-        padding: 8px;
-        height: 50px;
+    /* --- MEJORA: SOPORTE PARA ORIENTACIÓN HORIZONTAL --- */
+    @include respond-to("(orientation: landscape) and (max-height: 500px)") {
+        #contenedor {
+            flex-direction: row; // Cambia a layout horizontal.
+            padding: $spacing-sm;
+            gap: $spacing-sm;
+        }
         
-        &__button {
-            padding: 8px 5px;
-            font-size: 0.9rem;
+        // Creamos una columna para el header y el display
+        .info-column {
+            flex: 1; // Ocupa la mitad del espacio
+            display: flex;
+            flex-direction: column;
             
-            &--arrow {
-                font-size: 1.6rem !important;
+            header { padding: 0; margin-bottom: $spacing-sm; }
+            #display { 
+                flex-grow: 1; // El display ocupa el espacio sobrante en esta columna
+                height: 100%;
+                width: 100%;
+                margin: 0;
+                font-size: clamp(1.5rem, 8vh, 2.5rem) !important; // Ajustado a la altura
             }
         }
-    }
-    
-    /* Botones especiales */
-    #botexp, #botnor {
-        font-size: 0.9rem !important;
-        padding: 10px 6px;
-    }
-    
-    /* Mejoras para el historial en móviles */
-    .history-panel {
-        width: 100%;
-        max-width: 100vw;
-    }
-    
-    .history-panel__header {
-        padding: 15px 60px 15px 15px;
-    }
-    
-    .history-toggle-btn {
-        top: env(safe-area-inset-top, 10px);
-        right: 10px;
-        width: 45px;
-        height: 45px;
         
-        svg {
-            width: 20px;
-            height: 20px;
+        // El teclado ocupa la otra mitad
+        #cuerpoteclado {
+            flex: 1;
+            height: 100%;
+            width: 100%;
+            margin: 0;
+            padding: $spacing-xs;
         }
-    }
-    
-    /* Sidebar para móviles */
-    .sidebar-wrapper {
-        top: env(safe-area-inset-top, 10px);
-        left: 10px;
-        
-        .bubble-main {
-            width: 50px;
-            height: 50px;
-        }
-        
-        .bubble-btn {
-            width: 45px;
-            height: 45px;
-        }
-    }
-    
-    /* Botón de cambio de tema */
-    .theme-toggle-btn {
-        top: env(safe-area-inset-top, 10px);
-        right: 60px;
-        width: 35px;
-        height: 35px;
-        font-size: 1rem;
     }
 }
 
-/* Ajustes adicionales para dispositivos muy pequeños */
-@media (max-width: 350px) {
-    header[role="banner"] h1 {
-        font-size: 1.6rem !important;
-    }
-    
-    .display {
-        font-size: 2rem !important;
-        min-height: 60px;
-        padding: 12px;
-    }
-    
-    .keyboard__button {
-        font-size: 1.2rem !important;
-    }
-    
-    .keyboard-container {
-        max-height: 60dvh;
-    }
-}
-
-/* Ajuste para evitar que el teclado virtual de iOS afecte el diseño */
+/* Ajuste para evitar que el teclado virtual de iOS afecte el alto del viewport */
+/* Es una excelente práctica que ya tenías, la mantenemos. */
 @supports (-webkit-touch-callout: none) {
-    #contenedor {
+    body, #contenedor {
         min-height: -webkit-fill-available;
         height: -webkit-fill-available;
-    }
-    
-    body {
-        min-height: -webkit-fill-available;
-        height: -webkit-fill-available;
-    }
-}
-
-/* Ajuste específico para Safari iOS */
-@supports (padding: max(0px)) {
-    #contenedor {
-        padding-left: max(env(safe-area-inset-left, 10px), 10px);
-        padding-right: max(env(safe-area-inset-right, 10px), 10px);
-        padding-bottom: max(env(safe-area-inset-bottom, 10px), 10px);
     }
 }
