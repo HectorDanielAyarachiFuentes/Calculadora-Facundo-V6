@@ -89,7 +89,7 @@ body {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  min-height: 100svh;
+  min-height: 100dvh;
   padding: 0;
   background-color: var(--bg-main);
   background-image: repeating-linear-gradient(90deg, var(--bg-grid-lines) 0 1px, transparent 1px 96px), repeating-linear-gradient(0deg, var(--bg-grid-lines) 0 1px, transparent 1px 96px);
@@ -101,8 +101,8 @@ body {
   body {
     margin: 0;
     padding: 0;
-    height: 100svh;
-    min-height: 100svh;
+    height: 100dvh;
+    min-height: 100dvh;
     justify-content: flex-start;
   }
 }
@@ -275,6 +275,7 @@ body::before {
   .main-content-wrapper {
     justify-content: flex-start;
     padding-top: env(safe-area-inset-top, 10px);
+    height: 100dvh;
   }
 }
 
@@ -288,7 +289,7 @@ body::before {
 @media (max-width: 600px) {
   #contenedor {
     padding-left: 0 !important;
-    height: 100svh;
+    height: 100dvh;
     padding: 0 env(safe-area-inset-right, 10px) 0 env(safe-area-inset-left, 10px);
   }
 }
@@ -369,7 +370,7 @@ header[role=banner] .subtitle a:hover {
 }
 
 /* ======================================================= */
-/* --- COMPONENTE: CALCULADORA (Versión Definitiva) --- */
+/* --- COMPONENTE: CALCULADORA (Versión Definitiva con dvh) --- */
 /* ======================================================= */
 .calculator-container {
   position: relative;
@@ -470,6 +471,7 @@ header[role=banner] .subtitle a:hover {
     margin-bottom: env(safe-area-inset-bottom, 10px);
     display: flex;
     flex-direction: column;
+    max-height: 65dvh;
   }
 }
 
@@ -558,7 +560,7 @@ header[role=banner] .subtitle a:hover {
   .keyboard {
     position: relative;
     height: 100%;
-    min-height: 300px;
+    min-height: 50dvh;
   }
 }
 
@@ -701,14 +703,18 @@ header[role=banner] .subtitle a:hover {
 @media (max-width: 600px) {
   .calculator-container {
     padding: 0 10px;
+    height: 100dvh;
   }
   .keyboard-container {
-    min-height: 55vh;
-    max-height: 65vh;
+    min-height: 55dvh;
+    max-height: 65dvh;
   }
   .keyboard__button--operator,
   .keyboard__button--special {
     font-size: clamp(1.1rem, 4vw, 1.5rem) !important;
+  }
+  .keyboard {
+    grid-template-rows: repeat(5, minmax(0, 1fr));
   }
 }
 /* ======================================================= */

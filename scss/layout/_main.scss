@@ -10,8 +10,9 @@
     height: 100%;
     
     @media (max-width: 600px) {
-        justify-content: flex-start; // Para mejor distribución en móviles
-        padding-top: env(safe-area-inset-top, 10px); // Área segura superior
+        justify-content: flex-start;
+        padding-top: env(safe-area-inset-top, 10px);
+        height: 100dvh; // CAMBIADO: a dvh
     }
 }
 
@@ -24,7 +25,7 @@
     
     @media (max-width: 600px) {
         padding-left: 0 !important;
-        height: 100svh;
+        height: 100dvh; // CAMBIADO: a dvh
         padding: 0 env(safe-area-inset-right, 10px) 0 env(safe-area-inset-left, 10px);
     }
 }

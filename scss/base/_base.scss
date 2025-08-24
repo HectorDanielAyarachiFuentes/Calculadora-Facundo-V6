@@ -19,7 +19,7 @@ body {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    min-height: 100svh; // Usamos svh para viewport pequeño
+    min-height: 100dvh; // CAMBIADO: de svh a dvh (Dynamic Viewport Height)
     padding: 0;
     background-color: $bg-main;
     background-image: repeating-linear-gradient(90deg, $bg-grid-lines 0 1px, transparent 1px 96px),
@@ -31,9 +31,9 @@ body {
     @media (max-width: 600px) {
         margin: 0;
         padding: 0;
-        height: 100svh; // Altura específica para móviles
-        min-height: 100svh;
-        justify-content: flex-start; // Cambiado para mejor distribución
+        height: 100dvh; // CAMBIADO: a dvh
+        min-height: 100dvh; // CAMBIADO: a dvh
+        justify-content: flex-start;
     }
 }
 

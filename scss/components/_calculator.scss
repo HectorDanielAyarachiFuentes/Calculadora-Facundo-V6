@@ -1,5 +1,5 @@
 /* ======================================================= */
-/* --- COMPONENTE: CALCULADORA (Versión Definitiva) --- */
+/* --- COMPONENTE: CALCULADORA (Versión Definitiva con dvh) --- */
 /* ======================================================= */
 
 // --- Variables específicas del componente ---
@@ -81,15 +81,16 @@ $keyboard-gap: 2px;
     border-radius: 10px;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
     overflow: hidden;
-    margin-bottom: env(safe-area-inset-bottom, 15px); // RESPETA el área segura inferior
+    margin-bottom: env(safe-area-inset-bottom, 15px);
 
     @media (max-width: 600px) {
         flex-grow: 1;
         min-height: 0;
         border-radius: 12px;
-        margin-bottom: env(safe-area-inset-bottom, 10px); // Área segura para navegadores móviles
+        margin-bottom: env(safe-area-inset-bottom, 10px);
         display: flex;
         flex-direction: column;
+        max-height: 65dvh; // CAMBIADO: a dvh
     }
 }
 
@@ -144,7 +145,7 @@ $keyboard-gap: 2px;
     @media (max-width: 600px) {
         position: relative;
         height: 100%;
-        min-height: 300px; // Altura mínima garantizada
+        min-height: 50dvh; // CAMBIADO: a dvh
     }
 }
 
@@ -242,7 +243,7 @@ $keyboard-gap: 2px;
         height: 50px;
         padding: 8px;
         bottom: env(safe-area-inset-bottom, 0px);
-        position: fixed; // Cambiado a fixed para mejor comportamiento en móviles
+        position: fixed;
     }
 }
 
@@ -250,16 +251,22 @@ $keyboard-gap: 2px;
 @media (max-width: 600px) {
     .calculator-container {
         padding: 0 10px;
+        height: 100dvh; // CAMBIADO: a dvh
     }
     
     .keyboard-container {
-        min-height: 55vh; // Altura mínima garantizada
-        max-height: 65vh; // Altura máxima para no excederse
+        min-height: 55dvh; // CAMBIADO: a dvh
+        max-height: 65dvh; // CAMBIADO: a dvh
     }
     
     // Asegurar que los botones de operaciones sean visibles
     .keyboard__button--operator,
     .keyboard__button--special {
         font-size: clamp(1.1rem, 4vw, 1.5rem) !important;
+    }
+    
+    // Garantizar que el teclado ocupe el espacio disponible dinámicamente
+    .keyboard {
+        grid-template-rows: repeat(5, minmax(0, 1fr)); // Distribución flexible
     }
 }
