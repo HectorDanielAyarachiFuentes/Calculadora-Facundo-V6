@@ -20,12 +20,9 @@
 @import 'components/history';
 @import 'components/sidebar';
 @import 'components/modal';
-<<<<<<< HEAD
-@import 'components/theme-switcher';
+@import 'components/theme-switcher'; // <-- LUGAR CORRECTO. Se queda aquí.
 
-// 4. Media queries responsivas
-@import 'responsive/mobile'; // Nuevo archivo para responsive móvil
-@import 'responsive/mobile-fallback'; // Nuevo archivo para fallbacks
-=======
-@import 'components/theme-switcher'; // Nuevo componente para el cambio de tema
->>>>>>> parent of 0128db5 (1321)
+// 4. Media queries responsivas.
+// Contienen los estilos que se aplican en diferentes tamaños de pantalla.
+@import 'responsive/mobile';
+@import 'responsive/mobile-fallback';
