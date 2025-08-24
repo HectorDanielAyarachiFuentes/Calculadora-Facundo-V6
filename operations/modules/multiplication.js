@@ -1,20 +1,46 @@
 // =======================================================
-// --- operations/modules/multiplication.js (VERSIÓN FINALÍSIMA) ---
+// --- operations/modules/multiplication.js (VERSIÓN FINAL CON CORRECCIÓN DE SIGNOS) ---
 // =======================================================
 "use strict";
 
 import { calculateLayout } from '../utils/layout-calculator.js';
 import { crearCelda } from '../utils/dom-helpers.js';
-// --- ¡LA LÍNEA QUE FALTABA! ---
 import { salida, errorMessages } from '../../config.js';
 
 /**
- * Realiza y visualiza la operación de multiplicación.
+ * Inyecta los estilos CSS necesarios para la multiplicación en el <head> del documento.
+ * Se ejecuta solo una vez para evitar duplicados.
+ */
+function injectMultiplicationStyles() {
+    const styleId = 'multiplication-styles';
+    if (document.getElementById(styleId)) {
+        return; // Los estilos ya existen.
+    }
+    const cssStyles = `
+        .color-operando { color: #ffab70; }
+        .color-signo    { color: #9e9e9e; }
+        .color-coma     { color: #f44336; font-weight: bold; }
+        .color-resultado{ color: #4caf50; }
+        .color-parcial-1 { color: #64b5f6; }
+        .color-parcial-2 { color: #ba68c8; }
+        .color-parcial-3 { color: #fff176; }
+    `;
+    const styleElement = document.createElement('style');
+    styleElement.id = styleId;
+    styleElement.textContent = cssStyles;
+    document.head.appendChild(styleElement);
+}
+
+/**
+ * Realiza y visualiza la operación de multiplicación con un formato limpio y convencional.
  * @param {Array<[string, number]>} numerosAR - Los operandos.
  */
 export function multiplica(numerosAR) {
+    injectMultiplicationStyles();
     salida.innerHTML = "";
     const fragment = document.createDocumentFragment();
+
+    const coloresParciales = ['color-parcial-1', 'color-parcial-2', 'color-parcial-3'];
 
     const [num1, numDec1] = numerosAR[0];
     const [num2, numDec2] = numerosAR[1];
@@ -30,68 +56,84 @@ export function multiplica(numerosAR) {
     }
     
     const totalDecimalesResultado = numDec1 + numDec2;
-    let num1Display = num1; if (numDec1 > 0) num1Display = num1.slice(0, num1.length - numDec1) + ',' + num1.slice(num1.length - numDec1);
-    let num2Display = num2; if (numDec2 > 0) num2Display = num2.slice(0, num2.length - numDec2) + ',' + num2.slice(num2.length - numDec2);
+    let num1Display = num1; if (numDec1 > 0) num1Display = num1.slice(0, -numDec1) + ',' + num1.slice(-numDec1);
+    let num2Display = num2; if (numDec2 > 0) num2Display = num2.slice(0, -numDec2) + ',' + num2.slice(-numDec2);
     
     let resultadoDisplay = resultadoS;
     if (totalDecimalesResultado > 0) {
-        if (resultadoDisplay.length <= totalDecimalesResultado) resultadoDisplay = '0'.repeat(totalDecimalesResultado - resultadoDisplay.length + 1) + resultadoDisplay;
-        resultadoDisplay = resultadoDisplay.slice(0, resultadoDisplay.length - totalDecimalesResultado) + ',' + resultadoDisplay.slice(resultadoDisplay.length - totalDecimalesResultado);
+        let padding = '0'.repeat(Math.max(0, totalDecimalesResultado - resultadoDisplay.length + 1));
+        resultadoDisplay = padding + resultadoDisplay;
+        resultadoDisplay = resultadoDisplay.slice(0, -totalDecimalesResultado) + ',' + resultadoDisplay.slice(-totalDecimalesResultado);
     }
-    if (resultadoDisplay.includes(',')) resultadoDisplay = resultadoDisplay.replace(/0+$/, '').replace(/,$/, '');
+    if (resultadoDisplay.startsWith(',')) resultadoDisplay = '0' + resultadoDisplay;
+    if (resultadoDisplay.endsWith(',')) resultadoDisplay = resultadoDisplay.slice(0, -1);
 
-    const longestPartialProductLength = num2.length > 1 ? [...num2].reduce((max, d) => Math.max(max, (BigInt(num1) * BigInt(d)).toString().length), 0) : 0;
-    const anchuraEnCeldas = Math.max(num1Display.length, num2Display.length + 1, resultadoDisplay.length, longestPartialProductLength + num2.length - 1);
-    const alturaEnCeldas = 3 + (num2.length > 1 ? num2.length + 1 : 0);
+    const partialProducts = [...num2].map((digit, index) => {
+        const product = (BigInt(num1) * BigInt(digit)).toString();
+        const offset = num2.length - 1 - index;
+        return { product, offset, digit };
+    }).filter(p => p.digit !== '0');
+    
+    if (num2.replace(/0/g, '').length === 0) partialProducts.push({product: '0', offset:0, digit:'0'});
+
+    const maxPartialProductWidth = partialProducts.reduce((max, p) => Math.max(max, p.product.length + p.offset), 0);
+    const anchuraEnCeldas = Math.max(num1Display.length, num2Display.length + 2, resultadoDisplay.length, maxPartialProductWidth + (partialProducts.length > 1 ? 1 : 0));
+    const alturaEnCeldas = 3 + (partialProducts.length > 1 ? partialProducts.length + 1 : (partialProducts.length === 1 ? 1 : 0));
     
     const { tamCel, tamFuente, offsetHorizontal, paddingLeft, paddingTop } = calculateLayout(salida, anchuraEnCeldas, alturaEnCeldas);
     
     let yPos = paddingTop;
 
-    for (let i = 0; i < num1Display.length; i++) {
-        const leftPos = offsetHorizontal + (anchuraEnCeldas - num1Display.length + i) * tamCel + paddingLeft;
-        fragment.appendChild(crearCelda("output-grid__cell output-grid__cell--dividendo", num1Display[i], { left: `${leftPos}px`, top: `${yPos}px`, width: `${tamCel}px`, height: `${tamCel}px`, fontSize: `${tamFuente}px` }));
-    }
-    yPos += tamCel;
-    const signLeft = offsetHorizontal + (anchuraEnCeldas - num2Display.length - 1) * tamCel + paddingLeft;
-    fragment.appendChild(crearCelda("output-grid__cell output-grid__cell--producto", "x", { left: `${signLeft}px`, top: `${yPos}px`, width: `${tamCel}px`, height: `${tamCel}px`, fontSize: `${tamFuente}px` }));
-    for (let i = 0; i < num2Display.length; i++) {
-        const leftPos = offsetHorizontal + (anchuraEnCeldas - num2Display.length + i) * tamCel + paddingLeft;
-        fragment.appendChild(crearCelda("output-grid__cell output-grid__cell--dividendo", num2Display[i], { left: `${leftPos}px`, top: `${yPos}px`, width: `${tamCel}px`, height: `${tamCel}px`, fontSize: `${tamFuente}px` }));
-    }
-
-    yPos += tamCel;
-    const line1Left = offsetHorizontal + (anchuraEnCeldas - Math.max(num1Display.length, num2Display.length + 1)) * tamCel + paddingLeft;
-    const line1Width = Math.max(num1Display.length, num2Display.length + 1) * tamCel;
-    fragment.appendChild(crearCelda("output-grid__line", "", { left: `${line1Left}px`, top: `${yPos}px`, width: `${line1Width}px`, height: `2px` }));
-    
-    if (num2.length > 1) {
-        yPos += tamCel * 0.2;
-        for (let i = num2.length - 1; i >= 0; i--) {
-            let resultadoFila = (BigInt(num1) * BigInt(num2[i])).toString();
-            let colOffset = num2.length - 1 - i;
-            
-            if (i === 0) {
-                const signPlusLeft = offsetHorizontal + (anchuraEnCeldas - resultadoFila.length - colOffset - 1) * tamCel + paddingLeft;
-                fragment.appendChild(crearCelda("output-grid__cell output-grid__cell--producto", "+", { left: `${signPlusLeft}px`, top: `${yPos}px`, width: `${tamCel}px`, height: `${tamCel}px`, fontSize: `${tamFuente}px` }));
-            }
-
-            for (let j = 0; j < resultadoFila.length; j++) {
-                const leftPos = offsetHorizontal + (anchuraEnCeldas - resultadoFila.length - colOffset + j) * tamCel + paddingLeft;
-                fragment.appendChild(crearCelda("output-grid__cell output-grid__cell--producto", resultadoFila[j], { left: `${leftPos}px`, top: `${yPos}px`, width: `${tamCel}px`, height: `${tamCel}px`, fontSize: `${tamFuente}px` }));
-            }
-            yPos += tamCel;
+    const dibujarNumero = (numeroStr, y, claseBase, claseDigito) => {
+        for (let i = 0; i < numeroStr.length; i++) {
+            const char = numeroStr[i];
+            const esComa = char === ',';
+            const claseColor = esComa ? 'color-coma' : claseDigito;
+            const leftPos = offsetHorizontal + (anchuraEnCeldas - numeroStr.length + i) * tamCel + paddingLeft;
+            fragment.appendChild(crearCelda(`${claseBase} ${claseColor}`, char, { left: `${leftPos}px`, top: `${y}px`, width: `${tamCel}px`, height: `${tamCel}px`, fontSize: `${tamFuente}px` }));
         }
-        const finalLineLeft = offsetHorizontal;
-        const totalBlockWidth = anchuraEnCeldas * tamCel;
-        fragment.appendChild(crearCelda("output-grid__line", "", { left: `${finalLineLeft}px`, top: `${yPos}px`, width: `${totalBlockWidth}px`, height: `2px` }));
+    };
+
+    dibujarNumero(num1Display, yPos, 'output-grid__cell output-grid__cell--operando', 'color-operando');
+    yPos += tamCel;
+
+    const signLeft = offsetHorizontal + (anchuraEnCeldas - num2Display.length - 2) * tamCel + paddingLeft;
+    fragment.appendChild(crearCelda("output-grid__cell output-grid__cell--signo color-signo", "x", { left: `${signLeft}px`, top: `${yPos}px`, width: `${tamCel}px`, height: `${tamCel}px`, fontSize: `${tamFuente}px` }));
+    dibujarNumero(num2Display, yPos, 'output-grid__cell output-grid__cell--operando', 'color-operando');
+    
+    yPos += tamCel;
+    const lineWidth1 = Math.max(num1Display.length, num2Display.length + 2) * tamCel;
+    const lineLeft1 = offsetHorizontal + (anchuraEnCeldas * tamCel) - lineWidth1 + paddingLeft;
+    fragment.appendChild(crearCelda("output-grid__line", "", { left: `${lineLeft1}px`, top: `${yPos}px`, width: `${lineWidth1}px`, height: `2px` }));
+    yPos += tamCel * 0.2;
+    
+    if (partialProducts.length > 1) {
+        partialProducts.reverse().forEach(({ product, offset }, index) => {
+            yPos += tamCel;
+            const colorClass = coloresParciales[index % coloresParciales.length];
+            
+            // --- MEJORA: Colocar un único signo '+' antes del segundo producto parcial ---
+            if (index === 1) {
+                const signPlusLeft = offsetHorizontal + (anchuraEnCeldas - maxPartialProductWidth - 2) * tamCel + paddingLeft;
+                fragment.appendChild(crearCelda("output-grid__cell output-grid__cell--signo color-signo", "+", { left: `${signPlusLeft}px`, top: `${yPos}px`, width: `${tamCel}px`, height: `${tamCel}px`, fontSize: `${tamFuente}px` }));
+            }
+            
+            for (let j = 0; j < product.length; j++) {
+                const leftPos = offsetHorizontal + (anchuraEnCeldas - product.length - offset + j) * tamCel + paddingLeft;
+                fragment.appendChild(crearCelda(`output-grid__cell output-grid__cell--producto-parcial ${colorClass}`, product[j], { left: `${leftPos}px`, top: `${yPos}px`, width: `${tamCel}px`, height: `${tamCel}px`, fontSize: `${tamFuente}px` }));
+            }
+        });
+
+        yPos += tamCel;
+        const lineWidth2 = Math.max(resultadoDisplay.length, maxPartialProductWidth + 1) * tamCel;
+        const lineLeft2 = offsetHorizontal + (anchuraEnCeldas * tamCel) - lineWidth2 + paddingLeft;
+        fragment.appendChild(crearCelda("output-grid__line", "", { left: `${lineLeft2}px`, top: `${yPos}px`, width: `${lineWidth2}px`, height: `2px` }));
+        yPos += tamCel * 0.2;
+    } else if (partialProducts.length === 1) {
+        yPos += tamCel; // Solo avanzamos el espacio para el resultado
     }
     
-    yPos += tamCel * 0.2;
-    for (let i = 0; i < resultadoDisplay.length; i++) {
-        const leftPos = offsetHorizontal + (anchuraEnCeldas - resultadoDisplay.length + i) * tamCel + paddingLeft;
-        fragment.appendChild(crearCelda("output-grid__cell output-grid__cell--cociente", resultadoDisplay[i], { left: `${leftPos}px`, top: `${yPos}px`, width: `${tamCel}px`, height: `${tamCel}px`, fontSize: `${tamFuente}px` }));
-    }
+    dibujarNumero(resultadoDisplay, yPos, 'output-grid__cell output-grid__cell--resultado-final', 'color-resultado');
 
     salida.appendChild(fragment);
 }
