@@ -1,8 +1,7 @@
 /* ================================================= */
-/* --- VARIABLES GLOBALES PARA UN FÁCIL MANTENIMIENTO --- */
+/* --- VARIABLES GLOBALES --- */
 /* ================================================= */
 $breakpoint-mobile: 600px;
-// $breakpoint-small-mobile ya no es necesario gracias a la tipografía fluida.
 
 // Espaciados consistentes
 $spacing-xs: 5px;
@@ -14,150 +13,200 @@ $spacing-lg: 20px;
 $border-radius-sm: 8px;
 $border-radius-lg: 15px;
 
+// Colores base
+$bg-dark: #121212;
+$text-light: #ffffff;
+$accent-color: #3b82f6;
+$btn-yellow: #facc15;
+$btn-gray: #1e1e1e;
+$btn-red: #ef4444;
+
 
 /* ================================================= */
 /* --- MIXINS REUTILIZABLES --- */
 /* ================================================= */
 // Mixin optimizado para aceptar cualquier media query
 @mixin respond-to($query) {
-    @media #{$query} {
-        @content;
-    }
+  @media #{$query} {
+    @content;
+  }
 }
 
 
-/* ============================================== */
-/* --- DISEÑO RESPONSIVE PARA MÓVILES MEJORADO --- */
-/* ============================================== */
-@include respond-to("(max-width: #{$breakpoint-mobile})") {
-    
-    body { 
-        padding: 0;
-        // La altura 100dvh (dynamic viewport height) se adapta a la aparición/desaparición
-        // de las barras de navegación del navegador móvil.
-        height: 100dvh; 
-        overflow: hidden; // Evita el scroll en la vista de la app.
+/* ================================================= */
+/* --- ESTILOS BASE --- */
+/* ================================================= */
+body {
+  margin: 0;
+  padding: 0;
+  background-color: $bg-dark;
+  color: $text-light;
+  font-family: 'Segoe UI', sans-serif;
+
+  // Altura dinámica con fallback
+  min-height: 100dvh;
+  height: 100dvh;
+  @supports not (height: 100dvh) {
+    min-height: 100vh;
+    height: 100vh;
+  }
+
+  overflow: hidden;
+  touch-action: manipulation;
+
+  display: flex;
+  flex-direction: column;
+}
+
+#contenedor {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background-color: $bg-dark;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+
+/* ================================================= */
+/* --- HEADER --- */
+/* ================================================= */
+header {
+  padding: $spacing-sm $spacing-md 0;
+  margin-bottom: $spacing-md;
+  flex-shrink: 0;
+  text-align: center;
+
+  h1 {
+    font-size: clamp(1.8rem, 8vw, 2.2rem);
+    line-height: 1.1;
+    margin-bottom: $spacing-xs;
+    color: #e93535;
+    font-weight: bold;
+  }
+
+  .subtitle {
+    font-size: clamp(0.65rem, 2vw, 0.8rem);
+    margin-top: $spacing-xs;
+    color: #888;
+  }
+}
+
+
+/* ================================================= */
+/* --- DISPLAY --- */
+/* ================================================= */
+#display {
+  width: calc(100% - ($spacing-lg * 2));
+  margin: 0 auto $spacing-md;
+  padding: $spacing-md;
+  min-height: 70px;
+  flex-shrink: 0;
+
+  font-size: clamp(2rem, 10vw, 2.8rem);
+  background-color: rgba(0, 0, 0, 0.5);
+  border-radius: $border-radius-lg;
+  text-align: right;
+  line-height: 1.3;
+  word-wrap: break-word;
+  white-space: pre-line;
+}
+
+
+/* ================================================= */
+/* --- TECLADO --- */
+/* ================================================= */
+#cuerpoteclado {
+  width: calc(100% - $spacing-lg);
+  margin: 0 auto;
+  border-radius: $border-radius-lg;
+  flex-grow: 1;
+
+  display: flex;
+  padding: $spacing-xs;
+  background-color: $btn-gray;
+
+  #teclado {
+    width: 100%;
+    height: 100%;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(5, 1fr);
+    gap: $spacing-sm;
+
+    button {
+      font-size: clamp(1.3rem, 5vw, 1.6rem);
+      border-radius: $border-radius-sm;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border: none;
+      cursor: pointer;
+      font-weight: bold;
+      background-color: $btn-gray;
+      color: $text-light;
+      transition: transform 0.2s ease, opacity 0.2s ease;
+
+      &:active {
+        transform: scale(0.95);
+        opacity: 0.8;
+      }
+
+      &.yellow { background-color: $btn-yellow; color: black; }
+      &.gray   { background-color: $btn-gray;  color: #ccc; }
+      &.red    { background-color: $btn-red;   color: white; }
+      &.blue   { background-color: $accent-color; color: white; }
     }
-    
-    #contenedor {
-        width: 100%;
-        height: 100%;
-        padding: 0;
-        margin: 0;
-        display: flex;
-        flex-direction: column;
-        opacity: 1 !important; // Asumiendo que se necesita para sobreescribir algo.
+
+    // Ejemplo para un botón doble
+    .btn-span-2 {
+      grid-column: span 2;
     }
-    
-    header {
-        padding: $spacing-sm $spacing-md 0;
-        margin-bottom: $spacing-md;
-        flex-shrink: 0; // Evita que el header se encoja.
-        
-        h1 {
-            // MEJORA: Tipografía fluida. Se ajusta suavemente al tamaño de la pantalla.
-            // clamp(min, preferido, max)
-            font-size: clamp(1.8rem, 8vw, 2.2rem) !important;
-            line-height: 1.1;
-            margin-bottom: $spacing-xs;
-        }
-        
-        .subtitle {
-            font-size: 0.7rem !important;
-            margin-top: $spacing-xs;
-        }
-    }
-    
+  }
+}
+
+
+/* ================================================= */
+/* --- ORIENTACIÓN HORIZONTAL (LANDSCAPE) --- */
+/* ================================================= */
+@include respond-to("(orientation: landscape) and (max-height: 500px)") {
+  #contenedor {
+    flex-direction: row;
+    padding: $spacing-sm;
+    gap: $spacing-sm;
+  }
+
+  .info-column {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+
+    header { padding: 0; margin-bottom: $spacing-sm; }
     #display {
-        width: calc(100% - ($spacing-lg * 2)); // Centrado y con padding lateral
-        margin: 0 auto $spacing-md;
-        padding: $spacing-md;
-        min-height: 70px;
-        flex-shrink: 0;
-        // MEJORA: Tipografía fluida también para el display.
-        font-size: clamp(2rem, 10vw, 2.8rem) !important;
+      flex-grow: 1;
+      height: 100%;
+      width: 100%;
+      margin: 0;
+      font-size: clamp(1.5rem, 8vh, 2.5rem);
     }
-    
-    #cuerpoteclado {
-        width: calc(100% - $spacing-lg) !important;
-        margin: 0 auto;
-        border-radius: $border-radius-lg;
-        // Clave para la responsividad vertical: crece para ocupar todo el espacio sobrante.
-        flex-grow: 1; 
-        display: flex; // Permite que el grid interno (#teclado) ocupe el 100% de la altura.
-        padding: $spacing-xs; // Un pequeño padding para el grid
-    }
+  }
 
-    // MEJORA: Se define explícitamente el grid para el teclado.
-    #teclado {
-        width: 100%;
-        height: 100%;
-        display: grid;
-        // 4 columnas de igual tamaño.
-        grid-template-columns: repeat(4, 1fr); 
-        // 5 filas de igual tamaño. Se distribuyen el alto total disponible.
-        grid-template-rows: repeat(5, 1fr); 
-        gap: $spacing-sm; // Espacio uniforme entre botones.
-
-        button {
-            // MEJORA: Tipografía fluida para los botones.
-            font-size: clamp(1.3rem, 5vw, 1.6rem) !important;
-            border-radius: $border-radius-sm;
-            // Aseguramos que los botones se vean bien
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            border: none;
-            cursor: pointer;
-        }
-
-        // Clase de ejemplo para un botón que ocupe dos columnas,
-        // como el botón "Ver Pantalla" de la imagen.
-        .btn-span-2 {
-            grid-column: span 2;
-        }
-    }
-    
-    /* --- MEJORA: SOPORTE PARA ORIENTACIÓN HORIZONTAL --- */
-    @include respond-to("(orientation: landscape) and (max-height: 500px)") {
-        #contenedor {
-            flex-direction: row; // Cambia a layout horizontal.
-            padding: $spacing-sm;
-            gap: $spacing-sm;
-        }
-        
-        // Creamos una columna para el header y el display
-        .info-column {
-            flex: 1; // Ocupa la mitad del espacio
-            display: flex;
-            flex-direction: column;
-            
-            header { padding: 0; margin-bottom: $spacing-sm; }
-            #display { 
-                flex-grow: 1; // El display ocupa el espacio sobrante en esta columna
-                height: 100%;
-                width: 100%;
-                margin: 0;
-                font-size: clamp(1.5rem, 8vh, 2.5rem) !important; // Ajustado a la altura
-            }
-        }
-        
-        // El teclado ocupa la otra mitad
-        #cuerpoteclado {
-            flex: 1;
-            height: 100%;
-            width: 100%;
-            margin: 0;
-            padding: $spacing-xs;
-        }
-    }
+  #cuerpoteclado {
+    flex: 1;
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    padding: $spacing-xs;
+  }
 }
 
-/* Ajuste para evitar que el teclado virtual de iOS afecte el alto del viewport */
-/* Es una excelente práctica que ya tenías, la mantenemos. */
+
+/* ================================================= */
+/* --- FIX PARA SAFARI iOS --- */
+/* ================================================= */
 @supports (-webkit-touch-callout: none) {
-    body, #contenedor {
-        min-height: -webkit-fill-available;
-        height: -webkit-fill-available;
-    }
+  body, #contenedor {
+    min-height: -webkit-fill-available;
+    height: -webkit-fill-available;
+  }
 }
