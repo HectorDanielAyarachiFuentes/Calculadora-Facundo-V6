@@ -2,7 +2,7 @@
 
 [![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/HectorDanielAyarachiFuentes/Calculadora-Facundo-V2)
 
-¡Bienvenido a **La Calculadora de Facundo V2**! Mucho más que una simple calculadora, es una herramienta educativa diseñada para desmitificar las matemáticas. Su principal característica es que no solo te da el resultado, sino que te **muestra visualmente y paso a paso** cómo se llega a él. Ideal para estudiantes, profesores y cualquier persona curiosa por entender el "porqué" detrás de las operaciones.
+¡Bienvenido a **La Calculadora de Facundo V6**! Mucho más que una simple calculadora, es una herramienta educativa diseñada para desmitificar las matemáticas. Su principal característica es que no solo te da el resultado, sino que te **muestra visualmente y paso a paso** cómo se llega a él. Ideal para estudiantes, profesores y cualquier persona curiosa por entender el "porqué" detrás de las operaciones.
 
 Este proyecto nació con la idea de hacer las matemáticas más accesibles e interactivas, transformando los cálculos abstractos en animaciones claras y fáciles de seguir.
 
@@ -12,10 +12,12 @@ Este proyecto nació con la idea de hacer las matemáticas más accesibles e int
 | :---: | :---: | :---: |
 | ![Historial de operaciones](https://raw.githubusercontent.com/HectorDanielAyarachiFuentes/Calculadora-Facundo-V2/main/Img/Historial%20de%20operaciones.jpeg) | ![Suma con llevadas](https://raw.githubusercontent.com/HectorDanielAyarachiFuentes/Calculadora-Facundo-V2/main/Img/Suma%20proceso.jpeg) | ![Factores Primos](https://raw.githubusercontent.com/HectorDanielAyarachiFuentes/Calculadora-Facundo-V2/main/Img/Agrupar%20factores%20primos.jpeg) |
 | **Historial Interactivo** | **Suma con Llevadas Visuales** | **Descomposición en Factores Primos** |
-| ![Diseño móvil](https://github.com/HectorDanielAyarachiFuentes/Calculadora-Facundo-V6/blob/main/Img/Vision%20movil%20responsiva.jpeg?raw=true) | ![Resta con llevadas](https://raw.githubusercontent.com/HectorDanielAyarachiFuentes/Calculadora-Facundo-V2/main/Img/Resta%20resuleta.jpeg) | ![Raíz Cuadrada](https://raw.githubusercontent.com/HectorDanielAyarachiFuentes/Calculadora-Facundo-V2/main/Img/Raiz%20cuadrada%20con%20numeros%20exactos%20solamente%2C%20por%20ahora...jpeg) |
+| <img src="https://github.com/HectorDanielAyarachiFuentes/Calculadora-Facundo-V6/blob/main/Img/Vision%20movil%20responsiva.jpeg?raw=true" alt="Diseño móvil" width="250"> | ![Resta con llevadas](https://raw.githubusercontent.com/HectorDanielAyarachiFuentes/Calculadora-Facundo-V2/main/Img/Resta%20resuleta.jpeg) | ![Raíz Cuadrada](https://raw.githubusercontent.com/HectorDanielAyarachiFuentes/Calculadora-Facundo-V2/main/Img/Raiz%20cuadrada%20con%20numeros%20exactos%20solamente%2C%20por%20ahora...jpeg) |
 | **Totalmente Responsivo** | **Resta con Préstamos Animados** | **Raíz Cuadrada (para cuadrados perfectos)** |
 | ![Pantalla de inicio](https://raw.githubusercontent.com/HectorDanielAyarachiFuentes/Calculadora-Facundo-V2/main/Img/Inicio%20de%20calculadora.jpeg) | ![División paso a paso](https://raw.githubusercontent.com/HectorDanielAyarachiFuentes/Calculadora-Facundo-V2/main/Img/Division.jpeg) | ![Resultado final](https://raw.githubusercontent.com/HectorDanielAyarachiFuentes/Calculadora-Facundo-V2/main/Img/Suma%20fin%20y%20resultado%20interactivo.jpeg) |
 | **Interfaz Limpia y Clara** | **División Larga Paso a Paso** | **Resultado Final Interactivo** |
+| ![Modo Oscuro](https://github.com/HectorDanielAyarachiFuentes/Calculadora-Facundo-V6/blob/main/Img/Vistageneral.jpeg?raw=true) | ![Lector de Números](https://github.com/HectorDanielAyarachiFuentes/Calculadora-Facundo-V6/blob/main/Img/lectordenumeros.jpeg?raw=true) | ![Calculadora de Área y Perímetro](https://github.com/HectorDanielAyarachiFuentes/Calculadora-Facundo-V6/blob/main/Img/calculadoradeareayperimetro.jpeg?raw=true) |
+| **Modo Oscuro** | **Lector de Números** | **Cálculo de Área y Perímetro** |
 
 ## 🚀 Funcionalidades Principales
 
@@ -28,8 +30,12 @@ Este proyecto nació con la idea de hacer las matemáticas más accesibles e int
 -   **Funciones Avanzadas:**
     -   Descomposición en **factores primos**.
     -   Cálculo de **raíz cuadrada** para números exactos.
+    -   Calculadora de **área y perímetro**.
+-   **Interfaz y Accesibilidad:**
+    -   **Modo Oscuro:** Para una mejor visualización en ambientes con poca luz.
+    -   **Lector de Números:** Lee en voz alta los números y resultados para mejorar la accesibilidad.
+    -   **Diseño Responsivo:** Funciona y se ve genial tanto en computadoras de escritorio como en dispositivos móviles.
 -   **Historial de Operaciones:** Guarda todas tus operaciones para que puedas revisarlas más tarde.
--   **Diseño Responsivo:** Funciona y se ve genial tanto en computadoras de escritorio como en dispositivos móviles.
 
 ## 🛠️ Estructura y Arquitectura del Proyecto
 
